@@ -143,10 +143,10 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>${project.parent.artifactId}.mpi.personIdentifierId</property>
+		<property>${project.parent.artifactId}.mpi.personIdentifierTypeUuid</property>
 		<defaultValue></defaultValue>
 		<description>
-			Specifies id of identifier type which will be used for Mpi Person Id. Note that this is not currently the UUID.
+			Specifies uuid of identifier type which will be used for Mpi Person Id
 		</description>
 	</globalProperty>
 
@@ -199,14 +199,6 @@
 	</globalProperty>
 
 	<globalProperty>
-		<property>${project.parent.artifactId}.mpi.patientRoot</property>
-		<defaultValue></defaultValue>
-		<description>
-			Specifies the Root Identifier for the Patient in the PID-3 section of the HL7 message
-		</description>
-	</globalProperty>
-
-	<globalProperty>
 		<property>${project.parent.artifactId}.mpi.sendingApplication</property>
 		<defaultValue></defaultValue>
 		<description>
@@ -240,7 +232,21 @@
 		</description>
 	</globalProperty>
 
+	<globalProperty>
+		<property>${project.parent.artifactId}.mpi.pixIdentifierTypeUuidList</property>
+		<defaultValue></defaultValue>
+		<description>
+			Specifies sending identifier UUID list (separate with comma)
+		</description>
+	</globalProperty>
 
+	<globalProperty>
+		<property>${project.parent.artifactId}.mpi.pdqIdentifierTypeUuidList</property>
+		<defaultValue></defaultValue>
+		<description>
+			Specifies sending identifier UUID list (separate with comma)
+		</description>
+	</globalProperty>
 
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>

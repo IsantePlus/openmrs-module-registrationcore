@@ -48,7 +48,7 @@ public final class RegistrationCoreConstants {
 
 	public static final String GP_MPI_GLOBAL_IDENTIFIER_DOMAIN_ID = "registrationcore.openempi.globalIdentifierDomainId";
 
-	public static final String GP_MPI_PERSON_IDENTIFIER_ID = "registrationcore.mpi.personIdentifierId";
+	public static final String GP_MPI_PERSON_IDENTIFIER_TYPE_UUID = "registrationcore.mpi.personIdentifierTypeUuid";
 
 	public static final String GP_LOCAL_MPI_IDENTIFIER_TYPE_MAP = "registrationcore.local_mpi_identifierTypeMap.";
 
@@ -83,6 +83,10 @@ public final class RegistrationCoreConstants {
 	public static final String GP_MPI_RECEIVING_APPLICATION = "registsrationcore.mpi.receivingApplication";
 
 	public static final String GP_MPI_RECEIVING_FACILITY = "registrationcore.mpi.receivingFacility";
+
+	public static final String GP_MPI_PIX_IDENTTIFIER_TYPE_UUID_LIST = "registrationcore.mpi.pixIdentifierTypeUuidList";
+
+	public static final String GP_MPI_PDQ_IDENTTIFIER_TYPE_UUID_LIST = "registrationcore.mpi.pdqIdentifierTypeUuidList";
 
 	public static final String GP_BIOMETRICS_IMPLEMENTATION = "registrationcore.biometrics.implementation";
 }
