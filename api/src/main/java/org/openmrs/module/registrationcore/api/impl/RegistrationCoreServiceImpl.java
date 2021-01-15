@@ -434,7 +434,7 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 								+ "Patient ID: %s of identifier type: %s has not been found in MPI",
 						patientIdentifier, patientIdentifierTypeUuid));
 			}else{
-				Patient savedPatient = persistImportedMpiPatient(foundPatient.toPatient());
+				Patient unsavedPatient = persistImportedMpiPatient(foundPatient.toPatient());
 				Location defaultLocation = Context.getLocationService().getDefaultLocation();
 //				TODO save the extra obs
 //				Create registration encounter
@@ -443,31 +443,32 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 				EncounterRole registrationEncounterRole = registrationCoreProperties.getRegistrationEncounterRole();
 				// create the encounter
 				Encounter registrationEncounter = new Encounter();
-				registrationEncounter.setPatient(savedPatient);
+				registrationEncounter.setPatient(unsavedPatient);
 				registrationEncounter.setEncounterType(registrationEncounterType);
 				registrationEncounter.setLocation(defaultLocation);
 				registrationEncounter.setEncounterDatetime(new Date());
-				Context.getEncounterService().saveEncounter(registrationEncounter);
 //
 				Set<Obs> patientObservations = foundPatient.getPatientObservations();
 				Iterator<Obs> iterator = patientObservations.iterator();
 				while(iterator.hasNext()){
 					Obs next = iterator.next();
-					next.setPerson(savedPatient);
+					next.setPerson(unsavedPatient);
 					if(next.getObsDatetime() == null){
 						next.setObsDatetime(new Date());
 					}
 					Iterator<Obs> groupIterator = next.getGroupMembers().iterator();
 					while(groupIterator.hasNext()){
 						Obs memberObs = groupIterator.next();
-						memberObs.setPerson(savedPatient);
+						memberObs.setPerson(unsavedPatient);
 						memberObs.setObsGroup(next);
 					}
 					registrationEncounter.addObs(next);
 				}
+
+				// Cascade saves for patient, encounter, etc.
+				Patient savedPatient = patientService.savePatient(unsavedPatient);
 				Context.getEncounterService().saveEncounter(registrationEncounter);
 
-				exportPatient(savedPatient);
 				savedPatientUuid = savedPatient.getUuid();
 			}
 		} catch (RuntimeException e) {
@@ -688,8 +689,8 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 			mpiPatient.addIdentifier(localId);
 		}
 
-		Patient patient = patientService.savePatient(mpiPatient);
-		return patient;
+		// Patient patient = patientService.savePatient(mpiPatient);
+		return mpiPatient;
 	}
 
 	private boolean isBiometricEngineEnabled() {
