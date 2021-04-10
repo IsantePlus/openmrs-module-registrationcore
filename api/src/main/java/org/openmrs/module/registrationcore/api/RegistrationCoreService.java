@@ -183,6 +183,14 @@ public interface RegistrationCoreService extends OpenmrsService {
 	 */
 	String importMpiPatient(String patientIdentifier, String patientIdentifierTypeUuid);
 
+
+	/**
+	 * Query to MPI server to find patient with Id "patientIdentifier" and specific patient identifier type
+	 * @param patientIdentifier person identifier of patient to be matched
+	 * @param patientIdentifierTypeUuid identifier type uuid of given patientId
+	 * @return Wrapper for the matched patient details
+	 */
+	PatientAndMatchQuality fetchMpiFpMatch (String patientIdentifier, String patientIdentifierTypeUuid);
 	/**
 	 * @return the engine used for biometric operations, if one is enabled
 	 */
