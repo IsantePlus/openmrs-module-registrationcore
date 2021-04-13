@@ -484,6 +484,18 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 		return savedPatientUuid;
 	}
 
+	@Override
+	public PatientAndMatchQuality fetchMpiFpMatch(String patientIdentifier, String patientIdentifierTypeUuid) {
+		MpiPatient foundPatient = fetchMpiPatientWithObservations(patientIdentifier, patientIdentifierTypeUuid);
+		if(foundPatient != null){
+			PatientAndMatchQuality patientMatch = new PatientAndMatchQuality(foundPatient,null,null,
+					foundPatient.getSourceLocation());
+			return patientMatch;
+		}
+		return null;
+	}
+
+
 	private Provider getRegistrationProvider() {
 		// TODO: determine what the correct way to get the current user as a provider is.
 		Provider registrationProvider = Context.getProviderService().getProviderByIdentifier("UNKNOWN");
