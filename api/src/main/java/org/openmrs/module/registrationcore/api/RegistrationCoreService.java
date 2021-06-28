@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.registrationcore.api;
 
-import org.dcm4chee.xds2.common.exception.XDSException;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Relationship;

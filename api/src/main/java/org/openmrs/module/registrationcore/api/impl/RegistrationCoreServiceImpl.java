@@ -488,8 +488,7 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 	public PatientAndMatchQuality fetchMpiFpMatch(String patientIdentifier, String patientIdentifierTypeUuid) {
 		MpiPatient foundPatient = fetchMpiPatientWithObservations(patientIdentifier, patientIdentifierTypeUuid);
 		if(foundPatient != null){
-			PatientAndMatchQuality patientMatch = new PatientAndMatchQuality(foundPatient,null,null,
-					foundPatient.getSourceLocation());
+			PatientAndMatchQuality patientMatch = new PatientAndMatchQuality(foundPatient,null,null,foundPatient.getSourceLocation());
 			return patientMatch;
 		}
 		return null;
@@ -554,27 +553,13 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 
 	@Override
 	public BiometricData saveBiometricsForPatient(Patient patient, BiometricData biometricData) {
+//		Only dealing with the subject IDs..no need to poll the engines
 		BiometricSubject subject = biometricData.getSubject();
 		if (subject == null) {
 			log.debug("There are no biometrics to save for patient");
-		}
-		else {
-			if (!isBiometricEngineEnabled()) {
-				throw new IllegalStateException("Unable to save biometrics, as no biometrics engine is enabled");
-			}
-			BiometricEngine biometricEngine = getBiometricEngine();
-			log.error("Using biometric engine: " + biometricEngine.getClass().getSimpleName());
-
+		}else {
 			PatientIdentifierType idType = biometricData.getIdentifierType();
-			log.error("There are no biometrics to save for patient:"+ idType.getName()+ "UUID:"+idType.getUuid()+"ID:"+subject.getSubjectId());
 			if (idType != null) {
-				log.debug("Saving biometrics as a patient identifier of type: " + idType.getName());
-				//Currently, lookup checks if identifier exists only in local fingerprint server, but this method will be used also by national ids
-				//BiometricSubject existingSubject = (subject.getSubjectId() == null ? null : biometricEngine.lookup(subject.getSubjectId()));
-				//if (existingSubject == null) {
-				//	throw new IllegalArgumentException("The subject doesn't exist in m2Sys. Did you call m2Sys enroll method?") ;
-				//}
-
 				// If patient does not already have an identifier that references this subject, add one
 				boolean identifierExists = false;
 				for (PatientIdentifier identifier : patient.getPatientIdentifiers(idType)) {
@@ -586,16 +571,12 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 					log.debug("Identifier already exists for patient");
 				} else {
 					
-					log.error("New patient identifier saved for patient avant: ");
+					log.info("Saving new patient Identifier.....: ");
 					PatientIdentifier identifier = identifierBuilder.createIdentifier(idType.getUuid(), subject.getSubjectId(), null);
-					log.error("New patient identifier saved for patient apres: " + identifier);
+					log.info("New patient identifier saved for patient...: " + identifier);
 					patient.addIdentifier(identifier);
 					patientService.savePatientIdentifier(identifier);
 					log.debug("New patient identifier saved for patient: " + identifier);	
-					
-					//registrationService.registerLocally(subject);
-					
-					
 				}
 			} else {
 				// TODO: In the future we could add additional support for different storage options - eg. as person attributes
