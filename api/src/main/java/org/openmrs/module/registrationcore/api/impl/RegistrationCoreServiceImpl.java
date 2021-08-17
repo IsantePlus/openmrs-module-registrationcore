@@ -579,13 +579,13 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 							log.error("Identifier update error....will proceed with the UUID");
 						}
 					}
-					
+
 					log.info("Saving new patient Identifier.....: ");
 					PatientIdentifier identifier = identifierBuilder.createIdentifier(idType.getUuid(), subject.getSubjectId(), null);
 					log.info("New patient identifier saved for patient...: " + identifier);
 					patient.addIdentifier(identifier);
 					patientService.savePatientIdentifier(identifier);
-					log.debug("New patient identifier saved for patient: " + identifier);	
+					log.debug("New patient identifier saved for patient: " + identifier);
 				}
 			} else {
 				// TODO: In the future we could add additional support for different storage options - eg. as person attributes
