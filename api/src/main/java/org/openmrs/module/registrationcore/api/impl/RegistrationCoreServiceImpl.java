@@ -553,7 +553,7 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 
 	@Override
 	public BiometricData saveBiometricsForPatient(Patient patient, BiometricData biometricData) {
-//		Only dealing with the subject IDs..no need to poll the engines
+//		Only dealing with the subject IDs...Need to update the local FP id thought to match patient ID
 		BiometricSubject subject = biometricData.getSubject();
 		if (subject == null) {
 			log.debug("There are no biometrics to save for patient");
@@ -570,13 +570,22 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 				if (identifierExists) {
 					log.debug("Identifier already exists for patient");
 				} else {
-					
+
+					//			Patient ID already formed at this stage, match the local fingerprint ID
+					if(idType.getUuid().equals(RegistrationCoreConstants.GP_BIOMETRICS_PERSON_IDENTIFIER_TYPE_UUID)){
+						try{
+							subject = getBiometricEngine().updateSubjectId(biometricData.getSubject().getSubjectId(), patient.getPatientIdentifier().getIdentifier());
+						}catch(Exception e){
+							log.error("Identifier update error....will proceed with the UUID");
+						}
+					}
+
 					log.info("Saving new patient Identifier.....: ");
 					PatientIdentifier identifier = identifierBuilder.createIdentifier(idType.getUuid(), subject.getSubjectId(), null);
 					log.info("New patient identifier saved for patient...: " + identifier);
 					patient.addIdentifier(identifier);
 					patientService.savePatientIdentifier(identifier);
-					log.debug("New patient identifier saved for patient: " + identifier);	
+					log.debug("New patient identifier saved for patient: " + identifier);
 				}
 			} else {
 				// TODO: In the future we could add additional support for different storage options - eg. as person attributes
