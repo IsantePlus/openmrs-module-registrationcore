@@ -464,7 +464,9 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 						memberObs.setPerson(savedPatient);
 						memberObs.setObsGroup(next);
 					}
-					registrationEncounter.addObs(next);
+					if(next.getConcept()!= null){
+                        registrationEncounter.addObs(next);
+                    }
 				}
 
 				// Save everything in one place at least - for now, missing observations.
