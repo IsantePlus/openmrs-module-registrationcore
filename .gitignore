@@ -49,3 +49,5 @@ activemq-data
 
 # MacOS X
 .DS_Store
+
+.flattened-pom.xml
