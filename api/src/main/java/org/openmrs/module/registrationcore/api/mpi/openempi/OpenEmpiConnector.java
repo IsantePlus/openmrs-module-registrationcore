@@ -88,4 +88,10 @@ public class OpenEmpiConnector implements MpiProvider<PatientAndMatchQuality> {
         if (!authenticator.isAuthenticated())
             authenticator.performAuthentication();
     }
+
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid) {
+		// TODO Auto-generated method stub
+		throw new NotImplementedException("Method fetchMpiPatientListWithObservations for PixPdqProvider is not implemented yet");
+	}
 }

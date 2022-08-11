@@ -84,4 +84,10 @@ public class PdqPatientFetcher implements MpiPatientFetcher {
         }
         return patient;
     }
+
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid) {
+		// TODO Auto-generated method stub
+		throw new NotImplementedException("Method fetchMpiPatientListWithObservations for PixPdqProvider is not implemented yet");
+	}
 }

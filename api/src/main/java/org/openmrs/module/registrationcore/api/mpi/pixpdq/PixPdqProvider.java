@@ -67,4 +67,10 @@ public class PixPdqProvider implements MpiProvider<Patient> {
     public List<PatientAndMatchQuality> findExactMatches(Patient patient, Map<String, Object> otherDataPoints, Double cutoff, Integer maxResults) {
         return searchAlgorithm.findExactMatches(patient, otherDataPoints, cutoff, maxResults);
     }
+
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid) {
+		// TODO Auto-generated method stub
+		throw new NotImplementedException("Method fetchMpiPatientListWithObservations for PixPdqProvider is not implemented yet");
+	}
 }

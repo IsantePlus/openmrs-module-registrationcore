@@ -52,6 +52,11 @@ public class FhirProvider implements MpiProvider<Patient> {
     public MpiPatient fetchMpiPatientWithObservations(String patientId, String identifierTypeUuid) {
         return patientFetcher.fetchMpiPatientWithObservations(patientId, identifierTypeUuid);
     }
+    
+    @Override
+    public List<MpiPatient> fetchMpiPatientListWithObservations(String patientId, String identifierTypeUuid) {
+        return patientFetcher.fetchMpiPatientListWithObservations(patientId, identifierTypeUuid);
+    }
 
     @Override
     public List<PatientAndMatchQuality> findSimilarMatches(Patient patient, Map<String, Object> otherDataPoints, Double cutoff, Integer maxResults) {

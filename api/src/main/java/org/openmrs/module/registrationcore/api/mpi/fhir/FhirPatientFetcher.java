@@ -1,5 +1,7 @@
 package org.openmrs.module.registrationcore.api.mpi.fhir;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
@@ -50,6 +52,21 @@ public class FhirPatientFetcher implements MpiPatientFetcher {
             throw new MpiException("Error in PDQ fetch by identifier", e);
         }
     }
+    
+    
+    
+    @Override
+    public List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid) {
+        try {
+            MpiClientService service = Context.getService(MpiClientService.class);
+            MpiClientConfiguration config = MpiClientConfiguration.getInstance();
+            List<MpiPatient> mpiPatients = service.getPatientList(patientIdentifier, config.getEnterprisePatientIdRoot());
+            return mpiPatients;
+        } catch(Exception e) {
+            throw new MpiException("Error in PDQ fetch by identifier", e);
+        }
+    }
+    
 
     @Override
     public Patient fetchMpiPatient(String patientIdentifier) {

@@ -44,7 +44,7 @@ public class FhirSimilarPatientsSearcher implements MpiSimilarPatientsSearcher {
 
             for (MpiPatient mp : mpiPatients) {
                 org.openmrs.module.registrationcore.api.mpi.common.MpiPatient mpiPatientExtract = new org.openmrs.module.registrationcore.api.mpi.common.MpiPatient();
-                mpiPatientExtract.setIdentifiers(mp.getIdentifiers());
+               // mpiPatientExtract.setIdentifiers(mp.getIdentifiers());
                 mpiPatientExtract.setBirthdate(mp.getBirthdate());
                 mpiPatientExtract.setDead(mp.isDead());
                 mpiPatientExtract.setGender(mp.getGender());

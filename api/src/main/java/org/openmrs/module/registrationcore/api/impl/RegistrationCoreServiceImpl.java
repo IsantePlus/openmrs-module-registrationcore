@@ -412,6 +412,26 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 		}
 		return mpiPatient;
 	}
+	
+	
+	
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String identifier, String identifierTypeUuid) {
+		if (!registrationCoreProperties.isMpiEnabled()) {
+			throw new MpiException("Should not perform 'fetchMpiPatientWithObservations' when MPI is disabled");
+		}
+		MpiProvider mpiProvider = registrationCoreProperties.getMpiProvider();
+		List<MpiPatient> mpiPatients = new ArrayList<MpiPatient>();
+		try {
+			mpiPatients = mpiProvider.fetchMpiPatientListWithObservations(identifier, identifierTypeUuid);
+		} catch (RuntimeException e) {
+			servePdqExceptionAndThrowAgain(e,
+					prepareParameters(identifier, identifierTypeUuid),
+					PdqErrorHandlingService.FIND_MPI_PATIENT_DESTINATION);
+		}
+		return mpiPatients;
+	}
+	
 
 	@Override
 	public String importMpiPatient(String personId) {
@@ -494,6 +514,23 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 			return patientMatch;
 		}
 		return null;
+	}
+
+	
+	@Override
+	public List<PatientAndMatchQuality> fetchMpiFpMatchList(String patientIdentifier, String patientIdentifierTypeUuid) {
+		List<MpiPatient> foundPatients = fetchMpiPatientListWithObservations(patientIdentifier, patientIdentifierTypeUuid);
+		
+		List<PatientAndMatchQuality> patientMatchs=new ArrayList<PatientAndMatchQuality>();
+		for(MpiPatient foundPatient:foundPatients) {			
+			if(foundPatient != null){
+				PatientAndMatchQuality patientMatch = new PatientAndMatchQuality(foundPatient,null,null,foundPatient.getSourceLocation());
+				patientMatchs.add(patientMatch);
+				//return patientMatch;
+			}
+		}		
+		
+		return patientMatchs;
 	}
 
 

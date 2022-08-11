@@ -1,5 +1,7 @@
 package org.openmrs.module.registrationcore.api.mpi.common;
 
+import java.util.List;
+
 import org.openmrs.Patient;
 import org.openmrs.module.santedb.mpiclient.model.MpiPatient;
 
@@ -32,4 +34,6 @@ public interface MpiPatientFetcher {
      * @return converted patient not yet saved to local DB alongside the observations
      */
     MpiPatient fetchMpiPatientWithObservations(String patientId, String identifierTypeUuid);
+
+	List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid);
 }
