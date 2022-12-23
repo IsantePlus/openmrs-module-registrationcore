@@ -41,7 +41,7 @@
 		<namephoneticsVersion>1.4</namephoneticsVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<xdsSenderVersion>2.2.1</xdsSenderVersion>
-		<mpiClientVersion>1.1.0</mpiClientVersion>
+		<mpiClientVersion>1.1.4</mpiClientVersion>
 		<apacheHttpCoreVersion>4.4.9</apacheHttpCoreVersion>
 		<apacheHttpClientVersion>4.5</apacheHttpClientVersion>
 		<jodaTimeVersion>2.2</jodaTimeVersion>

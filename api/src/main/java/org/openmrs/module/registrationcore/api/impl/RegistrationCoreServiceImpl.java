@@ -412,6 +412,25 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 		}
 		return mpiPatient;
 	}
+	
+	
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String identifier, String identifierTypeUuid) {
+		if (!registrationCoreProperties.isMpiEnabled()) {
+			throw new MpiException("Should not perform 'fetchMpiPatientWithObservations' when MPI is disabled");
+		}
+		MpiProvider mpiProvider = registrationCoreProperties.getMpiProvider();
+		List<MpiPatient> mpiPatients = new ArrayList<MpiPatient>();
+		try {
+			mpiPatients = mpiProvider.fetchMpiPatientListWithObservations(identifier, identifierTypeUuid);
+			log.error(identifier+ "TEST :" + mpiPatients.size());
+		} catch (RuntimeException e) {
+			servePdqExceptionAndThrowAgain(e,
+					prepareParameters(identifier, identifierTypeUuid),
+					PdqErrorHandlingService.FIND_MPI_PATIENT_DESTINATION);
+		}
+		return mpiPatients;
+	}
 
 	@Override
 	public String importMpiPatient(String personId) {
@@ -435,6 +454,7 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 			}else{
 				Patient savedPatient = createImportedMpiPatient(foundPatient.toPatient());
 				Location defaultLocation = Context.getLocationService().getDefaultLocation();
+				
 				// TODO save the extra obs
 
 				// Create registration encounter
@@ -495,6 +515,37 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 		}
 		return null;
 	}
+	
+	
+	
+	@Override
+	public List<PatientAndMatchQuality> fetchMpiFpMatchList(String patientIdentifier, String patientIdentifierTypeUuid) {
+		
+		log.error(patientIdentifier+ "TEST :" + patientIdentifierTypeUuid);
+		
+		List<MpiPatient> foundPatients = fetchMpiPatientListWithObservations(patientIdentifier, patientIdentifierTypeUuid);
+		
+//		log.info("foundPatients :" + foundPatients.size());
+		
+		log.error(patientIdentifier+ "TEST :" + patientIdentifierTypeUuid);
+		
+		List<PatientAndMatchQuality> patientMatchs=new ArrayList<PatientAndMatchQuality>();
+		
+		for(MpiPatient foundPatient : foundPatients) {			
+			if(foundPatient != null){
+				PatientAndMatchQuality patientMatch = new PatientAndMatchQuality(foundPatient,null,null,foundPatient.getSourceLocation());
+				if(patientMatch !=null)
+				patientMatchs.add(patientMatch);
+				//return patientMatch;
+			}
+		}	
+		if(patientMatchs.size()>0)		
+		return patientMatchs;
+		else 
+			return null;
+	}
+	
+
 
 
 	private Provider getRegistrationProvider() {

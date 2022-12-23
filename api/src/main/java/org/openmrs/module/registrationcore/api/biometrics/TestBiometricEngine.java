@@ -10,6 +10,9 @@
 package org.openmrs.module.registrationcore.api.biometrics;
 
 import java.util.Arrays;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.registrationcore.api.biometrics.model.BiometricEngineStatus;
 import org.openmrs.module.registrationcore.api.biometrics.model.BiometricMatch;
 import org.openmrs.module.registrationcore.api.biometrics.model.BiometricSubject;
@@ -39,7 +42,7 @@ public class TestBiometricEngine implements BiometricEngine {
     private static final String FINGERPRINT_FORMAT = "FP1";
 
     private Map<String, BiometricSubject> enrolledSubjects = new HashMap<String, BiometricSubject>();
-
+    private final Log log = LogFactory.getLog(TestBiometricEngine.class);
     @Override
     public BiometricEngineStatus getStatus() {
         BiometricEngineStatus status = new BiometricEngineStatus();
@@ -58,6 +61,9 @@ public class TestBiometricEngine implements BiometricEngine {
     public EnrollmentResult enroll(String fingerprintsXmlTemplate) {
         List<Fingerprint> fingerprints = Collections.singletonList(
                 new Fingerprint(FINGERPRINT_TYPE, FINGERPRINT_FORMAT, fingerprintsXmlTemplate));
+        
+        log.error("EnrollmentResult =============================================> "+fingerprints.size());
+        
 
         return enroll(buildBiometricSubjectWithGivenFingeprints(fingerprints));
     }
@@ -119,6 +125,9 @@ public class TestBiometricEngine implements BiometricEngine {
     private EnrollmentResult enroll(BiometricSubject subject) {
         BiometricSubject nationalBiometricSubject = new BiometricSubject(UUID.randomUUID().toString());
         enrolledSubjects.put(subject.getSubjectId(), subject);
+        log.error(" BiometricSubject  =============================================> "+subject.toString());
+        
+        
         return new EnrollmentResult(subject, nationalBiometricSubject, EnrollmentStatus.SUCCESS);
     }
 
@@ -134,6 +143,8 @@ public class TestBiometricEngine implements BiometricEngine {
         BiometricSubject scannedBiometricSubject = new BiometricSubject();
         scannedBiometricSubject.setSubjectId(UUID.randomUUID().toString());
         scannedBiometricSubject.setFingerprints(fingerprints);
+        
+        log.error(" BiometricSubject  =============================================> "+fingerprints.size());
         return scannedBiometricSubject;
     }
 }

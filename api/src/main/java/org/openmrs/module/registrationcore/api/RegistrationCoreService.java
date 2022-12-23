@@ -206,4 +206,8 @@ public interface RegistrationCoreService extends OpenmrsService {
 	Patient findByPatientIdentifier(String patientIdentifier, String patientIdentifierTypeUuid);
 
 	Integer importCcd(Patient patient);
+
+	List<MpiPatient> fetchMpiPatientListWithObservations(String identifier, String identifierTypeUuid);
+
+	List<PatientAndMatchQuality> fetchMpiFpMatchList(String patientIdentifier, String patientIdentifierTypeUuid);
 }

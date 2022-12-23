@@ -62,4 +62,9 @@ public class FhirProvider implements MpiProvider<Patient> {
     public List<PatientAndMatchQuality> findExactMatches(Patient patient, Map<String, Object> otherDataPoints, Double cutoff, Integer maxResults) {
         return searchAlgorithm.findExactMatches(patient, otherDataPoints, cutoff, maxResults);
     }
+
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String patientId, String identifierTypeUuid) {
+        return patientFetcher.fetchMpiPatientListWithObservations(patientId, identifierTypeUuid);
+    }
 }

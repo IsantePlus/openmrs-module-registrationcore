@@ -84,4 +84,9 @@ public class PdqPatientFetcher implements MpiPatientFetcher {
         }
         return patient;
     }
+
+	@Override
+	public List<MpiPatient> fetchMpiPatientListWithObservations(String patientIdentifier, String identifierTypeUuid) {
+		throw new NotImplementedException("Method fetchMpiPatientListWithObservations for OpenEmpiPatientFetcher is not implemented yet");
+	}
 }
