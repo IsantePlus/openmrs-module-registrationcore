@@ -33,6 +33,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.santedb.mpiclient.aop.PatientSynchronizationAdvice;
 import org.openmrs.event.Event;
 import org.openmrs.event.EventMessage;
 import org.openmrs.module.idgen.IdentifierSource;
@@ -716,7 +717,12 @@ public class RegistrationCoreServiceImpl extends BaseOpenmrsService implements R
 			mpiPatient.addIdentifier(localId);
 		}
 
-		return patientService.savePatient(mpiPatient);
+		PatientSynchronizationAdvice.SUPPRESS.set(true);
+		try {
+			return patientService.savePatient(mpiPatient);
+		} finally {
+			PatientSynchronizationAdvice.SUPPRESS.set(false);
+		}
 	}
 
 	private boolean isBiometricEngineEnabled() {
