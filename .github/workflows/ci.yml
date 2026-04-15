@@ -13,6 +13,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      RELEASE_USERNAME: ${{ github.actor }}
+      RELEASE_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
     steps:
       - uses: actions/checkout@v6
 
@@ -32,6 +36,3 @@ jobs:
       - name: Publish package
         if: github.event_name == 'release' && github.event.action == 'created'
         run: mvn -B -P github-packages -DskipTests -Dfindbugs.skip=true -Dpmd.skip=true -Dcpd.skip=true deploy
-        env:
-          RELEASE_USERNAME: ${{ github.actor }}
-          RELEASE_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
