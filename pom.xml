@@ -34,7 +34,7 @@
 	</modules>
 
 	<properties>
-		<revision>2.2.0</revision>
+		<revision>2.2.5-SNAPSHOT</revision>
 		<openMRSVersion>1.10.2</openMRSVersion>
 		<idgenVersion>4.3</idgenVersion>
 		<eventVersion>2.3</eventVersion>
